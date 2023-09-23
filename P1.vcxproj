@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -129,13 +129,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\vcpkg\installed\x64-windows\include;C:\vcpkg\packages\poco_x64-windows\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\td;C:\Program Files\tgbot-cpp\include;C:\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\curl-8.3.0\builds\libcurl-vc17-x64-debug-dll\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libcurl_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\vcpkg\installed\x64-windows\debug\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libcurl-d.lib;TgBot.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,15 +146,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\vcpkg\installed\x64-windows\include;C:\vcpkg\packages\poco_x64-windows\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\td;C:\Program Files\tgbot-cpp\include;C:\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libcurl.lib;PocoNet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\vcpkg\installed\x64-windows\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libcurl.lib;TgBot.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
