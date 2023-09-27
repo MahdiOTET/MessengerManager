@@ -15,8 +15,8 @@ class Message
 public:
 	
 	Message();
-	Message(string, MessageType, deque<string>, vector<lableValuePair>, vector<lableValuePair>);
-	//Set the cation or text of the message
+	Message(string, MessageType, deque<string>, vector<lableValuePair>);
+
 	void setText(string);
 	//Set the type of the message
 	void setType(MessageType);
@@ -24,8 +24,6 @@ public:
 	void filePushBack(string);
 	//Push back a pair of the header lable and the value of header
 	void headerPushBack(lableValuePair);
-	//Push back a pair of the paramter lable and value of parameter
-	void parameterPushBack(lableValuePair);
 	
 	//Get the cation or text of the message
 	string getText();
@@ -35,14 +33,11 @@ public:
 	deque<string> getFiles();
 	//Get the headers in a vector of pairs
 	vector<lableValuePair> getHeaders();
-	//Get the parameters in a vector of pairs
-	vector<lableValuePair> getParameters();
+
 
 private:
 	string text;
 	MessageType type;
 	deque<string>files;
 	vector<pair<string,string>>headers;
-	vector<lableValuePair>parameters;
 };
-

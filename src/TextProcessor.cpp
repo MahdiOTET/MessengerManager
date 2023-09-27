@@ -1,6 +1,21 @@
 #include <cstdio>
 #include <string>
+#include <boost/format.hpp>
 #include "../include/TextProcessor.h"
+using boost::format;
+string TextProcessor::urlGenerator(MessengerHandler* handler, Message message)
+{
+	string url = str(format("%1%/%2%/%3%?") % handler->getApiEndPoint()
+		% handler->getMessengerToken()
+		% handler->getApiMethodNames()[message.getType()][0]);
+	string query = "";
+	vector<string>params = handler->getApiMethodNames()[];
+	for (auto it = params.begin() + 1; it != params.end(); ++it)
+	{
+		query.append(*it).
+	}
+
+}
 
 char* TextProcessor::textToUrlEncoder(const char* str)
 {
@@ -25,7 +40,7 @@ char* TextProcessor::textToUrlEncoder(const char* str)
 
 	encoded[j] = '\0'; // Null-terminate the encoded string
 	return encoded;
-    
+
 }
 
 bool TextProcessor::isCharUrlSafe(char ch)
