@@ -1,8 +1,6 @@
 ﻿#include <wx/wx.h>
-#include "../include/MainFrame.h"
 #include <curl/curl.h>
-#include <string>
-#include <stdlib.h>
+#include "../include/MainFrame.h"
 using std::string;
 
 
@@ -52,7 +50,6 @@ void MainFrame::sendClicked(wxCommandEvent& evt)
 
 bool MainFrame::sendEitaaMessage()
 {
-	setlocale(LC_ALL, "fa_IR");
 	CURLcode ret;
 	CURL* hnd = curl_easy_init();;
 	curl_mime* mime = curl_mime_init(hnd);;
@@ -99,7 +96,7 @@ bool MainFrame::sendTelegramMessage()
 
 	string telegramApiEndpoint = "https://api.telegram.org/bot6351217913:AAEIptkNU78Zz2f9IyZlTIR2ZSm_S9eFVEg/";
 	//string telegramBotToken = "";
-	string telegramChannelId = "@test_channel_your&";
+	string telegramChannelId = "-1001831605308&";
 	//string query = telegramApiEndpoint.append(telegramBotToken).append("sendPhoto?");
 	string query = telegramApiEndpoint.append("sendPhoto?");
 

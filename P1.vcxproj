@@ -20,11 +20,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\App.h" />
+    <ClInclude Include="include\EitaaHandler.h" />
+    <ClInclude Include="include\Footer.h" />
     <ClInclude Include="include\MainFrame.h" />
+    <ClInclude Include="include\Message.h" />
+    <ClInclude Include="include\MessageType.h" />
+    <ClInclude Include="include\MessengerHandler.h" />
+    <ClInclude Include="include\TextProcessor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\EitaaHandler.cpp" />
+    <ClCompile Include="src\Footer.cpp" />
     <ClCompile Include="src\MainFrame.cpp" />
+    <ClCompile Include="src\Message.cpp" />
+    <ClCompile Include="src\MessengerHandler.cpp" />
+    <ClCompile Include="src\TextProcessor.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
