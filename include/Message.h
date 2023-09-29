@@ -15,7 +15,10 @@ class Message
 public:
 	
 	Message();
-	Message(string, MessageType, deque<string>, vector<lableValuePair>);
+	Message(string text,
+		MessageType type,
+		deque<string>files = deque<string>(),
+		vector<lableValuePair>headers = vector<lableValuePair>());
 
 	void setText(string);
 	//Set the type of the message

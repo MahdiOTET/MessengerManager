@@ -1,10 +1,10 @@
 #include "../include/Message.h"
 
 Message::Message() { text = "No text assigned!!"; }
-Message::Message(string text = string(),
-		MessageType type = MessageType(),
-		deque<string>files = deque<string>(),
-		vector<lableValuePair>headers = vector<lableValuePair>())
+Message::Message(string text,
+		MessageType type,
+		deque<string>files,
+		vector<lableValuePair>headers)
 {
 	this->text = text;
 	this->type = type;

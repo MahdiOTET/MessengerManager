@@ -6,10 +6,10 @@ class Footer
 {
 public:
 	Footer();
-	Footer(string, string);
-	void setFooter(string);
+	Footer(string footerText, string footerLable);
+	void setFooter(string footerText);
 	string getFooter();
-	void setFooterLable(string);
+	void setFooterLable(string footerLable);	
 	string getFooterLable();
 private:
 	string footer;
