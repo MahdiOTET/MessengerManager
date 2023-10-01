@@ -41,7 +41,7 @@ private:
 	unordered_map <MessageType, vector<string>> messageTypeAndParams
 	{
 		{MessageType::Text, {"sendMessage", "chat_id", "text"}},
-		{MessageType::Photo, {"sendPhoto", "chat_id", "caption"}},//mimeName photo
+		{MessageType::Photo, {"sendMediaGroup", "chat_id", "caption"}},//mimeName photo
 		{MessageType::Video, {"sendVideo", "chat_id", "caption"}},//mimeName video
 		{MessageType::Audio, {"sendAudio", "chat_id", "caption"}},//mimeName audio
 		{MessageType::Document, {"sendDocument", "chat_id", "caption"}}//mimeName document
@@ -51,6 +51,8 @@ private:
 	CURLcode res;
 	curl_mime* mime;
 	curl_mimepart* part;
+	curl_mimepart* part1;
+	curl_mimepart* part2;
 	long httpCode;
 
 	Message message;

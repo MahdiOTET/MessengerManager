@@ -57,7 +57,7 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 	else
 	{
 		curl_easy_reset(hnd);
-		messageAndFooter = TextProcessor::textToUrlEncoder((message.getText() + footer.getFooter()).c_str()); //append the message and footer and encoded it
+		messageAndFooter = TextProcessor::textToUrlEncoder(message.getText() + footer.getFooter()); //append the message and footer and encoded it
 		generatedUrl = urlGenerator(messageAndFooter); //generate a url from the encoded message and api endpoints
 		curl_easy_setopt(hnd, CURLOPT_URL, generatedUrl.c_str());
 		if (type == MessageType::Text)
@@ -78,11 +78,13 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 			curl_easy_setopt(hnd, CURLOPT_VERBOSE, 1L);
 			//curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, writeCallback);
 			//curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response);
+			
+		
+			
 			for (const auto &file : message.getFiles())
 			{
-				part = curl_mime_addpart(mime);
-				curl_mime_name(part, "file");
-				curl_mime_filedata(part, file.c_str());
+				//part = curl_mime_addpart(mime);
+				
 			}
 			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
 			curl_easy_perform(hnd);

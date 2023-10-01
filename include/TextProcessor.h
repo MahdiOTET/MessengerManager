@@ -5,8 +5,8 @@ class TextProcessor
 {
 public:
 	//static string urlGenerator(MessengerHandler*, Message);
-	static char* textToUrlEncoder(const char*);
+	static char* textToUrlEncoder(string str);
 private:
-	static bool isCharUrlSafe(char);
+	static bool isCharUrlSafe(wchar_t);
 };
 

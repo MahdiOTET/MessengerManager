@@ -62,12 +62,16 @@ bool TelegramHandler::sendMessage(Message message, Footer footer)
 			//parse the response and notify the result (successful or failed)
 			break;
 		case MessageType::Photo:
-			for (const auto& file : message.getFiles())
-			{
-				part = curl_mime_addpart(mime);
-				curl_mime_name(part, "photo");
-				curl_mime_filedata(part, file.c_str());
-			}
+		//	for (const auto& file : message.getFiles())
+		//	{
+				/*part = curl_mime_addpart(mime);
+				curl_mime_name(part, "media");
+				curl_mime_filedata(part, "C:/Users/Public/Pictures/Sample Pictures/Jellyfish.jpg");
+				part1 = curl_mime_addpart(mime);
+				curl_mime_name(part1, "media");
+				curl_mime_filedata(part1, "C:/Users/Public/Pictures/Sample Pictures/Koala.jpg");*/
+
+			//}
 			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
 			curl_easy_perform(hnd);
 			break;
