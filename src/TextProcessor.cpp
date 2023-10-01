@@ -39,3 +39,10 @@ bool TextProcessor::isCharUrlSafe(wchar_t ch)
 	}
 	return false;
 }
+
+size_t TextProcessor::writeCallback(char* buffer, size_t size, size_t nmemb, std::string* userData)
+	{
+		size_t totalSize = size * nmemb;
+		userData->append(buffer, totalSize);
+		return totalSize;
+	}

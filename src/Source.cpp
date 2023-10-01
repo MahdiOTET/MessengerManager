@@ -22,11 +22,22 @@ int main()
 	message.setText("This is a album");
 	message.setType(MessageType::Text);
 
-	/*EitaaHandler eHandler(string("Test_channell"), string("bot206108:0cf4e8e7-1300-4999-966d-7e2f4e13e849"));
+	EitaaHandler eHandler(string("Test_channell"), string("bot206108:0cf4e8e7-1300-4999-966d-7e2f4e13e849"));
 	eHandler.setMessage(message);
-	eHandler.sendMessage(message, foot);*/
+	try
+	{
+		eHandler.sendMessage(message, foot);
+	}
+	catch (std::invalid_argument& err)
+	{
+		std::cout << err.what() << std::endl;
+	}
+	catch (std::runtime_error& err)
+	{
+		std::cout << err.what() << std::endl;
+	}
 	
-	TelegramHandler tHandler(string("@test_channel_your"), string("6351217913:AAEIptkNU78Zz2f9IyZlTIR2ZSm_S9eFVEg"));
+	/*TelegramHandler tHandler(string("@test_channel_your"), string("6351217913:AAEIptkNU78Zz2f9IyZlTIR2ZSm_S9eFVEg"));
 	tHandler.setMessage(message);
-	tHandler.sendMessage(message, foot);
+	tHandler.sendMessage(message, foot);*/
 }

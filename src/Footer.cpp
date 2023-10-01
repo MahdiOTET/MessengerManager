@@ -14,7 +14,7 @@ Footer::Footer(string footer, string lable)
 
 void Footer::setFooter(string footer)
 {
-    this->footer = footer;
+    this->footer = "\n\n" + footer;
 }
 
 string Footer::getFooter()

@@ -1,7 +1,9 @@
 #pragma once
 #include "Footer.h"
+#include "json.hpp"
 #include <unordered_map>
 using std::unordered_map;
+using json = nlohmann::json;
 class MessengerHandler
 {
 public:

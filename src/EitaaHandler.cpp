@@ -1,4 +1,3 @@
-#include <iostream>
 #include "../include/EitaaHandler.h"
 
 EitaaHandler::EitaaHandler(string chat_id, string messengerToken)
@@ -52,7 +51,14 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 
 	if (search == messageTypeAndParams.end())
 	{
-		//The message type is not valid //raise exception or something similar
+		throw std::invalid_argument{ "The message type is not valid" };
+		/*
+		paste it in main:
+		catch(std::invalid_argument &err)
+		{
+			show a dialog box and get the error message from err.what();	
+		}
+		*/
 	}
 	else
 	{
@@ -62,33 +68,74 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 		curl_easy_setopt(hnd, CURLOPT_URL, generatedUrl.c_str());
 		if (type == MessageType::Text)
 		{
-			curl_easy_setopt(hnd, CURLOPT_VERBOSE, 1L);
-			//curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &writeCallback);
-			//curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response);
+			//curl_easy_setopt(hnd, CURLOPT_VERBOSE, 1L);
+			curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &TextProcessor::writeCallback);
+			curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response);
 			curl_easy_perform(hnd);
-			//std::cout << response << std::endl;
-			//parse the response and notify the result (successful or failed)
+			json result = json::parse(response);
+			string ok = result["ok"].dump();
+			if (ok == "true")
+			{
+				return true;
+			}
+			else
+			{
+				string desc = result["description"];
+				if (desc == "Forbidden: user not access of channel chat")
+				{
+					throw std::invalid_argument{ "Eitaa channel id is invalid" };
+					/*
+					paste it in main:
+					catch(std::invalid_argument &err)
+					{
+						show a dialog box and get the error message from err.what();
+					}
+					*/
+
+				}
+				else if (desc == "Unauthorized")
+				{
+					throw std::invalid_argument{ "Eitaa bot token is not valid" };
+					/*
+					paste it in main:
+					catch(std::invalid_argument &err)
+					{
+						show a dialog box and get the error message from err.what();
+					}
+					*/
+				}
+				else
+				{
+					throw std::runtime_error{ "An unexpected error accoured during the upload to Eitaa servers" };
+					/*
+					paste it in main:
+					catch(std::runtime_error &err)
+					{
+						show a dialog box and get the error message from err.what();
+					}
+					*/
+				}
+			}
 
 		}
 		else
 		{
-			//messageAndFooter = TextProcessor::textToUrlEncoder((message.getText() + footer.getFooter()).c_str());
-			//generatedUrl = urlGenerator(messageAndFooter);
-			//curl_easy_setopt(hnd, CURLOPT_URL, generatedUrl.c_str());
+			messageAndFooter = TextProcessor::textToUrlEncoder((message.getText() + footer.getFooter()).c_str());
+			generatedUrl = urlGenerator(messageAndFooter);
+			curl_easy_setopt(hnd, CURLOPT_URL, generatedUrl.c_str());
 			curl_easy_setopt(hnd, CURLOPT_VERBOSE, 1L);
-			//curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, writeCallback);
-			//curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response);
+			curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &TextProcessor::writeCallback);
+			curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response);
 			
 		
 			
-			for (const auto &file : message.getFiles())
-			{
-				//part = curl_mime_addpart(mime);
-				
-			}
-			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
-			curl_easy_perform(hnd);
+			//for (const auto &file : message.getFiles())
+			//{
+			//	//part = curl_mime_addpart(mime);
+			//	
+			//}
+			//curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
+			//curl_easy_perform(hnd);
 		}
 	}
-	return false;
 }

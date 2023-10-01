@@ -2,6 +2,8 @@
 #include <boost/format.hpp>
 #include <unordered_map>
 #include <curl/curl.h>
+#include <stdexcept>
+#include <iostream>
 #include "Footer.h"
 #include "Message.h"
 #include "TextProcessor.h"
@@ -67,10 +69,5 @@ private:
 			return str(generatedUrl);
 	}
 
-	//size_t writeCallback(char* buffer, size_t size, size_t nmemb, std::string* userData)
-	//{
-	//	size_t totalSize = size * nmemb;
-	//	userData->append(buffer, totalSize);
-	//	return totalSize;
-	//}
+	
 };
