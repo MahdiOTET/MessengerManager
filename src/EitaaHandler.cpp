@@ -45,11 +45,11 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 	string messageAndFooter;
 	string response;
 	MessageType type = message.getType();
-	auto search = messageTypeAndParams.find(type);
+	auto search = messageTypeAndParams.find(type); //check and find the message type within the messageTypeAndParams
 
 	
 
-	if (search == messageTypeAndParams.end())
+	if (search == messageTypeAndParams.end()) //if the message is not found then an exception is thrown 
 	{
 		throw std::invalid_argument{ "The message type is not valid" };
 		/*
@@ -70,12 +70,15 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 		/*store the api response into the response string*/
 		curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &TextProcessor::writeCallback);
 		curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response);
+		json result;
+		string ok;
+		string desc;
 
 		if (type == MessageType::Test) //Authorize the credentials
 		{
 			curl_easy_perform(hnd);
-			json result = json::parse(response);
-			string ok = result["ok"].dump();
+			result = json::parse(response);
+			ok = result["ok"].dump();
 
 			if (ok == "true")
 			{
@@ -83,7 +86,7 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 			}
 			else
 			{
-				string desc = result["description"];
+				desc = result["description"];
 				if (desc == "Forbidden: user not access of channel chat")
 				{
 					throw std::invalid_argument{ "Eitaa channel id is not valid" };
@@ -112,12 +115,12 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 		else if (type == MessageType::Text)
 		{
 			curl_easy_perform(hnd);
-			json result = json::parse(response);
-			string ok = result["ok"].dump();
+			result = json::parse(response);
+			ok = result["ok"].dump();
 			
 			if (ok != "true")
 			{
-				throw std::runtime_error{ "An unexpected error accoured during the upload to Eitaa servers" };
+				throw std::runtime_error{ "An unexpected error accoured during upload to Eitaa servers" };
 				/*
 				paste it in main:
 				catch(std::runtime_error &err)
@@ -126,16 +129,24 @@ bool EitaaHandler::sendMessage(Message message, Footer footer)
 				}
 				*/
 			}
+			return true;
 		}
 		else
 		{
-			//for (const auto &file : message.getFiles())
-			//{
-			//	//part = curl_mime_addpart(mime);
-			//	
-			//}
-			//curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
-			//curl_easy_perform(hnd);
+			part = curl_mime_addpart(mime);
+			curl_mime_name(part, "file");
+			curl_mime_filedata(part, message.getFiles()[0].c_str());
+			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
+			
+			result = json::parse(response);
+			ok = result["ok"].dump();
+			desc = result["description"].dump();
+
+			if (ok != "true")
+			{
+				throw std::runtime_error{ "An unexpected error accoured during upload to Eitaa servers" };
+			}
+			return true;
 		}
 	}
 }

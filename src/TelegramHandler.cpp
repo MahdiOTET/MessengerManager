@@ -39,11 +39,13 @@ bool TelegramHandler::sendMessage(Message message, Footer footer)
 	string messageAndFooter;
 	string response;
 	MessageType type = message.getType();
-	auto search = messageTypeAndParams.find(type);
+	auto search = messageTypeAndParams.find(type);	//check and find the message type within the messageTypeAndParams
 
 
 
-	if (search == messageTypeAndParams.end())
+
+
+	if (search == messageTypeAndParams.end())	//if the message is not found then an exception is thrown 
 	{
 		throw std::invalid_argument{ "The message type is not valid" };
 		//The message type is not valid //raise exception or something similar
@@ -58,13 +60,12 @@ bool TelegramHandler::sendMessage(Message message, Footer footer)
 		/*store the api response into the response string*/
 		curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &TextProcessor::writeCallback);
 		curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response);
+
 		json result;
 		string ok;
 		string desc;
-		switch (type)
+		if (type == MessageType::Test)
 		{
-		case MessageType::Test:
-			
 			curl_easy_perform(hnd);
 			result = json::parse(response);
 			ok = result["ok"].dump();
@@ -88,65 +89,112 @@ bool TelegramHandler::sendMessage(Message message, Footer footer)
 					*/
 				}
 			}
-
-			break;
-		case MessageType::Text:
-			
+		}
+		else if (type == MessageType::Text)
+		{
 			curl_easy_perform(hnd);
 			result = json::parse(response);
+			ok = result["ok"].dump();
 			desc = result["description"].dump();
 
 			if (desc == "Bad Request : chat not found")
 			{
 				throw std::invalid_argument{ "Telegram channel id is not valid" };
 			}
+			else if (ok != "true")
+			{
+				throw std::runtime_error{ "An unexpected error accoured during upload to Telegram servers" };
+			}
 			return true;
-			break;
-		case MessageType::Photo:
-		//	for (const auto& file : message.getFiles())
-		//	{
-				/*part = curl_mime_addpart(mime);
-				curl_mime_name(part, "media");
-				curl_mime_filedata(part, "C:/Users/Public/Pictures/Sample Pictures/Jellyfish.jpg");
-				part1 = curl_mime_addpart(mime);
-				curl_mime_name(part1, "media");
-				curl_mime_filedata(part1, "C:/Users/Public/Pictures/Sample Pictures/Koala.jpg");*/
-
-			//}
-			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
-			curl_easy_perform(hnd);
-			break;
-		case MessageType::Video:
-			for (const auto& file : message.getFiles())
-			{
-				part = curl_mime_addpart(mime);
-				curl_mime_name(part, "video");
-				curl_mime_filedata(part, file.c_str());
-			}
-			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
-			curl_easy_perform(hnd);
-			break;
-		case MessageType::Audio:
-			for (const auto& file : message.getFiles())
-			{
-				part = curl_mime_addpart(mime);
-				curl_mime_name(part, "audio");
-				curl_mime_filedata(part, file.c_str());
-			}
-			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
-			curl_easy_perform(hnd);
-			break;
-		case MessageType::Document:
-			for (const auto& file : message.getFiles())
-			{
-				part = curl_mime_addpart(mime);
-				curl_mime_name(part, "document");
-				curl_mime_filedata(part, file.c_str());
-			}
-			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
-			curl_easy_perform(hnd);
-			break;
 		}
+		else if (type == MessageType::Photo)
+		{
+			part = curl_mime_addpart(mime);
+			curl_mime_name(part, "photo");
+			curl_mime_filedata(part, message.getFiles()[0].c_str());
+			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
+
+			curl_easy_perform(hnd);
+			result = json::parse(response);
+			ok = result["ok"].dump();
+			desc = result["description"].dump();
+
+			if (desc == "Bad Request : chat not found")
+			{
+				throw std::invalid_argument{ "Telegram channel id is not valid" };
+			}
+			else if (ok != "true")
+			{
+				throw std::runtime_error{ "An unexpected error accoured during upload to Telegram servers" };
+			}
+			return true;
+		}
+		else if (type == MessageType::Video)
+		{
+			part = curl_mime_addpart(mime);
+			curl_mime_name(part, "video");
+			curl_mime_filedata(part, message.getFiles()[0].c_str());
+			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
+
+			curl_easy_perform(hnd);
+			result = json::parse(response);
+			ok = result["ok"].dump();
+			desc = result["description"].dump();
+
+			if (desc == "Bad Request : chat not found")
+			{
+				throw std::invalid_argument{ "Telegram channel id is not valid" };
+			}
+			else if (ok != "true")
+			{
+				throw std::runtime_error{ "An unexpected error accoured during upload to Telegram servers" };
+			}
+			return true;
+		}
+		else if (type == MessageType::Audio)
+		{
+			part = curl_mime_addpart(mime);
+			curl_mime_name(part, "audio");
+			curl_mime_filedata(part, message.getFiles()[0].c_str());
+			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
+			
+			curl_easy_perform(hnd);
+			result = json::parse(response);
+			ok = result["ok"].dump();
+			desc = result["description"].dump();
+
+			if (desc == "Bad Request : chat not found")
+			{
+				throw std::invalid_argument{ "Telegram channel id is not valid" };
+			}
+			else if (ok != "true")
+			{
+				throw std::runtime_error{ "An unexpected error accoured during upload to Telegram servers" };
+			}
+			return true;
+		}
+		else if (type == MessageType::Document)
+		{
+			part = curl_mime_addpart(mime);
+			curl_mime_name(part, "document");
+			curl_mime_filedata(part, message.getFiles()[0].c_str());
+			curl_easy_setopt(hnd, CURLOPT_MIMEPOST, mime);
+			
+			curl_easy_perform(hnd);
+			result = json::parse(response);
+			ok = result["ok"].dump();
+			desc = result["description"].dump();
+
+			if (desc == "Bad Request : chat not found")
+			{
+				throw std::invalid_argument{ "Telegram channel id is not valid" };
+			}
+			else if (ok != "true")
+			{
+				throw std::runtime_error{ "An unexpected error accoured during upload to Telegram servers" };
+			}
+			return true;
+		}
+
 	}
-	return false;
 }

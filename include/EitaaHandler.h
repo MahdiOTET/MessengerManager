@@ -51,9 +51,7 @@ private:
 	CURL* hnd;
 	CURLcode res;
 	curl_mime* mime;
-	curl_mimepart* part1;
-	curl_mimepart* part2;
-	//vector<curl_mimepart*>parts;
+	curl_mimepart* part;
 	long httpCode;
 	
 	Message message;

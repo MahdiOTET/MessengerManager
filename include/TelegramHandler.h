@@ -53,8 +53,6 @@ private:
 	CURLcode res;
 	curl_mime* mime;
 	curl_mimepart* part;
-	curl_mimepart* part1;
-	curl_mimepart* part2;
 	long httpCode;
 
 	Message message;
