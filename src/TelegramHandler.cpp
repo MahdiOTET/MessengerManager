@@ -45,21 +45,62 @@ bool TelegramHandler::sendMessage(Message message, Footer footer)
 
 	if (search == messageTypeAndParams.end())
 	{
+		throw std::invalid_argument{ "The message type is not valid" };
 		//The message type is not valid //raise exception or something similar
 	}
 	else
 	{
 		curl_easy_reset(hnd);
-		messageAndFooter = TextProcessor::textToUrlEncoder((message.getText() + footer.getFooter()).c_str()); //append the message and footer and encoded it
+		messageAndFooter = TextProcessor::textToUrlEncoder(message.getText() + footer.getFooter()); //append the message and footer and encoded it
 		generatedUrl = urlGenerator(messageAndFooter); //generate a url from the encoded message and api endpoints
-		curl_easy_setopt(hnd, CURLOPT_URL, generatedUrl.c_str());
+		curl_easy_setopt(hnd, CURLOPT_URL, generatedUrl.c_str()); //set the curl object's url
 
+		/*store the api response into the response string*/
+		curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, &TextProcessor::writeCallback);
+		curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response);
+		json result;
+		string ok;
+		string desc;
 		switch (type)
 		{
-		case MessageType::Text:
+		case MessageType::Test:
+			
 			curl_easy_perform(hnd);
+			result = json::parse(response);
+			ok = result["ok"].dump();
+			desc = result["description"].dump();
 
-			//parse the response and notify the result (successful or failed)
+			if (ok == "true")
+			{
+				return true;
+			}
+			else
+			{
+				if (desc == "Unauthorized")
+				{
+					throw std::invalid_argument{ "Telegram bot token is not valid" };
+					/*
+					paste it in main:
+					catch(std::invalid_argument &err)
+					{
+						show a dialog box and get the error message from err.what();
+					}
+					*/
+				}
+			}
+
+			break;
+		case MessageType::Text:
+			
+			curl_easy_perform(hnd);
+			result = json::parse(response);
+			desc = result["description"].dump();
+
+			if (desc == "Bad Request : chat not found")
+			{
+				throw std::invalid_argument{ "Telegram channel id is not valid" };
+			}
+			return true;
 			break;
 		case MessageType::Photo:
 		//	for (const auto& file : message.getFiles())

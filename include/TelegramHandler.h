@@ -2,6 +2,7 @@
 #include <boost/format.hpp>
 #include <unordered_map>
 #include <curl/curl.h>
+#include <iostream>
 #include "Footer.h"
 #include "Message.h"
 #include "TextProcessor.h"
@@ -40,8 +41,9 @@ private:
 
 	unordered_map <MessageType, vector<string>> messageTypeAndParams
 	{
+		{MessageType::Test, {"getMe", "chat_id", "text"}},
 		{MessageType::Text, {"sendMessage", "chat_id", "text"}},
-		{MessageType::Photo, {"sendMediaGroup", "chat_id", "caption"}},//mimeName photo
+		{MessageType::Photo, {"sendPhoto", "chat_id", "caption"}},//mimeName photo
 		{MessageType::Video, {"sendVideo", "chat_id", "caption"}},//mimeName video
 		{MessageType::Audio, {"sendAudio", "chat_id", "caption"}},//mimeName audio
 		{MessageType::Document, {"sendDocument", "chat_id", "caption"}}//mimeName document

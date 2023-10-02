@@ -26,7 +26,7 @@ int main()
 	eHandler.setMessage(message);
 	try
 	{
-		eHandler.sendMessage(message, foot);
+		//eHandler.sendMessage(message, foot);
 	}
 	catch (std::invalid_argument& err)
 	{
@@ -37,7 +37,15 @@ int main()
 		std::cout << err.what() << std::endl;
 	}
 	
-	/*TelegramHandler tHandler(string("@test_channel_your"), string("6351217913:AAEIptkNU78Zz2f9IyZlTIR2ZSm_S9eFVEg"));
+	TelegramHandler tHandler(string("@test_channel_you"), string("6351217913:AAEIptkNU78Zz2f9IyZlTIR2ZSm_S9eFVEg"));
 	tHandler.setMessage(message);
-	tHandler.sendMessage(message, foot);*/
+	try
+	{
+		tHandler.sendMessage(message, foot);
+
+	}
+	catch (std::invalid_argument& err)
+	{
+		std::cout << err.what() << std::endl;
+	}
 }

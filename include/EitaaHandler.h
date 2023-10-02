@@ -40,6 +40,7 @@ private:
 
 	unordered_map <MessageType, vector<string>> messageTypeAndParams
 	{
+		{MessageType::Test, {"getMe", "chat_id", "text"}},
 		{MessageType::Text, {"sendMessage", "chat_id", "text"}},
 		{MessageType::Photo, {"sendFile", "chat_id", "caption"}},
 		{MessageType::Video, {"sendFile", "chat_id", "caption"}},
