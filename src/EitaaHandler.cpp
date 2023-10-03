@@ -5,11 +5,10 @@ EitaaHandler::EitaaHandler(string chat_id, string messengerToken)
 	hnd = curl_easy_init();
 	mime = curl_mime_init(hnd);
 
-	this->chat_id = chat_id;
-	this->messengerToken = messengerToken;
+	setChatId(chat_id);
+	setMessengerToken(messengerToken);
 }
 
-//EitaaHandler::EitaaHandler(Message message) : EitaaHandler() { this->message = message; }
 
 EitaaHandler::~EitaaHandler()
 {
@@ -31,11 +30,7 @@ string EitaaHandler::getChatId() { return chat_id; }
 
 Message EitaaHandler::getMessage() { return message; }
 
-//const string EitaaHandler::getApiEndpoint() { return apiEndpoint; }
-
 string EitaaHandler::getMessengerToken() { return messengerToken; }
-
-//unordered_map <MessageType, vector<string>> EitaaHandler::getTypeAndParams() { return messageTypeAndParams; }
 
 //				utilities				//
 

@@ -119,7 +119,7 @@ bool TelegramHandler::sendMessage(Message message, Footer footer)
 			ok = result["ok"].dump();
 			desc = result["description"].dump();
 
-			if (desc == "Bad Request : chat not found")
+			if (desc == "Bad Request : chat not found")	
 			{
 				throw std::invalid_argument{ "Telegram channel id is not valid" };
 			}
@@ -167,7 +167,7 @@ bool TelegramHandler::sendMessage(Message message, Footer footer)
 			{
 				throw std::invalid_argument{ "Telegram channel id is not valid" };
 			}
-			else if (ok != "true")
+			else
 			{
 				throw std::runtime_error{ "An unexpected error accoured during upload to Telegram servers" };
 			}

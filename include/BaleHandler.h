@@ -10,11 +10,12 @@
 #include "MessengerHandler.h"
 using std::unordered_map;
 using boost::format;
-class EitaaHandler : public MessengerHandler
+
+class BaleHandler : public MessengerHandler
 {
-public :
-	EitaaHandler(string chat_id, string messengerToken);
-	virtual ~EitaaHandler();
+public:
+	BaleHandler(string chat_id, string messengerToken);
+	virtual ~BaleHandler();
 
 	//			setters			//
 	void setMessage(Message message);
@@ -29,21 +30,21 @@ public :
 
 	//			utilites			//
 
-	virtual bool sendMessage(Message message, Footer footer);
+	virtual bool sendMessage(Message, Footer);
 
 private:
 	string chat_id;
 	string messengerToken;
-	const string apiEndpoint = "https://eitaayar.ir/api";
+	const string apiEndpoint = "https://tapi.bale.ai";
 
 	unordered_map <MessageType, vector<string>> messageTypeAndParams
 	{
-		{MessageType::Test, {"getMe", "chat_id", "text"}},
+		{MessageType::Test, {"getMe","chat_id","text"}},
 		{MessageType::Text, {"sendMessage", "chat_id", "text"}},
-		{MessageType::Photo, {"sendFile", "chat_id", "caption"}},
-		{MessageType::Video, {"sendFile", "chat_id", "caption"}},
-		{MessageType::Audio, {"sendFile", "chat_id", "caption"}},
-		{MessageType::Document, {"sendFile", "chat_id", "caption"}}
+		{MessageType::Photo, {"sendPhoto", "chat_id", "caption"}},
+		{MessageType::Video, {"sendVideo", "chat_id", "caption"}},
+		{MessageType::Audio, {"sendAudio", "chat_id", "caption"}},
+		{MessageType::Document, {"sendDocument", "chat_id", "caption"}}
 	};
 
 	CURL* hnd;
@@ -51,20 +52,19 @@ private:
 	curl_mime* mime;
 	curl_mimepart* part;
 	long httpCode;
-	
+
 	Message message;
 
 	string urlGenerator(string messageAndFooter)
 	{
 		vector<string>params = messageTypeAndParams[message.getType()];
-		auto generatedUrl = format("%1%/%2%/%3%?%4%=%5%&%6%=%7%") % apiEndpoint
+		auto generatedUrl = format("%1%/bot%2%/%3%?%4%=%5%&%6%=%7%") % apiEndpoint
 			% messengerToken
 			% params[0]
 			% params[1] % chat_id
 			% params[2] % messageAndFooter;
 
-			return str(generatedUrl);
+		return str(generatedUrl);
 	}
-
-	
 };
+
